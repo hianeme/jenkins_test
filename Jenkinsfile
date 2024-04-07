@@ -20,7 +20,9 @@ pipeline {
 
                     // Obtention des fichiers à envoyer
                     def filesToSend = sh(script: "ls", returnStdout: true).trim().split("\n")
-
+                    
+                    sh "curl -o ftp://${user}:${password}@${server}${remoteDir}/current ftp://${user}:${password}@${server}${remoteDir}/back"
+                    
                     // Utilisation de la commande curl pour envoyer les fichiers
                     filesToSend.each { file ->
                         sh "curl -T ${file} ftp://${user}:${password}@${server}${remoteDir}/"
