@@ -18,7 +18,7 @@ pipeline {
                     def password = 'lorem1357\\$\\$' // Mot de passe FTP
                     def remoteDir = '/htdocs' // Répertoire distant sur le serveur FTP
                     def timestamp = new Date().format('yyyy-MM-dd_HH-mm-ss') // Timestamp actuel pour le nom de sauvegarde
-                    def newDir = current_${timestamp}
+                    def newDir = 'current_${timestamp}'
                     // Obtention des fichiers à envoyer
                     // def filesToSend = sh(script: "ls", returnStdout: true).trim().split("\n")
 
