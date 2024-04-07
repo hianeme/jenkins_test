@@ -15,7 +15,8 @@ pipeline {
                 script {
                     def server = 'ftpupload.net' // Adresse IP ou nom de domaine du serveur FTP
                     def user = 'b11_36320483' // Nom d'utilisateur FTP
-                    def password = 'lorem1357\$\$' // Mot de passe FTP
+                    def password = 'lorem1357$$' // Mot de passe FTP
+                    def escapedPassword = password.replaceAll('\\$', '\\\\$')
                     def remoteDir = '/htdocs' // Répertoire distant sur le serveur FTP
 
                     // Obtention des fichiers à envoyer
@@ -23,7 +24,7 @@ pipeline {
 
                     // Utilisation de la commande curl pour envoyer les fichiers
                     filesToSend.each { file ->
-                        sh "curl -T ${file} ftp://${user}:${password}@${server}${remoteDir}/"
+                        sh "curl -T ${file} ftp://${user}:${escapedPassword}@${server}${remoteDir}/"
                     }
                 }
             }
