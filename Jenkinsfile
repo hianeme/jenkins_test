@@ -15,7 +15,7 @@ pipeline {
                 script {
                     def server = 'ftpupload.net' // Adresse IP ou nom de domaine du serveur FTP
                     def user = 'b11_36320483' // Nom d'utilisateur FTP
-                    def password = "lorem1357\$\$" // Mot de passe FTP
+                    def password = 'lorem1357\$\$' // Mot de passe FTP
                     def remoteDir = '/htdocs' // Répertoire distant sur le serveur FTP
 
                     // Obtention des fichiers à envoyer
