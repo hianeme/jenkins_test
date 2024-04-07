@@ -29,7 +29,7 @@ pipeline {
                     // sh "curl -Q 'RNFR current' -Q 'RNTO backup_${timestamp}' ftp://${user}:${password}@${server}${remoteDir}/"
 
                     // Utilisation de la commande curl pour envoyer les fichiers
-                    filesToSend.each { file ->
+                    fileList.each { file ->
                         sh "curl -T ${file} ftp://${user}:${password}@${server}${remoteDir}/${newDir}/"
                         // sh "curl --ftp-create-dirs -T ${fileList.join(' ')} ftp://${user}:${password}@${server}${remoteDir}/${newDir}/"
                     }
