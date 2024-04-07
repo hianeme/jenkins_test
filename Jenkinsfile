@@ -23,15 +23,16 @@ pipeline {
                     // def filesToSend = sh(script: "ls", returnStdout: true).trim().split("\n")
                     def fileList = sh(script: "ls", returnStdout: true).trim().split()
 
-                    sh "curl --ftp-create-dirs -T ${fileList.join(' ')} ftp://${user}:${password}@${server}${remoteDir}/${newDir}/"
+                    
                     
                     // Utilisation de la commande curl pour renommer le répertoire current
                     // sh "curl -Q 'RNFR current' -Q 'RNTO backup_${timestamp}' ftp://${user}:${password}@${server}${remoteDir}/"
 
                     // Utilisation de la commande curl pour envoyer les fichiers
-                    /*filesToSend.each { file ->
-                        sh "curl -T ${file} ftp://${user}:${password}@${server}${remoteDir}/"
-                    }*/
+                    filesToSend.each { file ->
+                        sh "curl -T ${file} ftp://${user}:${password}@${server}${remoteDir}/${newDir}/"
+                        // sh "curl --ftp-create-dirs -T ${fileList.join(' ')} ftp://${user}:${password}@${server}${remoteDir}/${newDir}/"
+                    }
                 }
             }
         }
