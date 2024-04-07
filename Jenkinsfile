@@ -17,12 +17,14 @@ pipeline {
                     def user = 'b11_36320483' // Nom d'utilisateur FTP
                     def password = 'lorem1357\\$\\$' // Mot de passe FTP
                     def remoteDir = '/htdocs' // Répertoire distant sur le serveur FTP
+                    def timestamp = new Date().format('yyyy-MM-dd_HH-mm-ss') // Timestamp actuel pour le nom de sauvegarde
 
                     // Obtention des fichiers à envoyer
                     def filesToSend = sh(script: "ls", returnStdout: true).trim().split("\n")
                     
-                    sh "curl -o ftp://${user}:${password}@${server}${remoteDir}/current ftp://${user}:${password}@${server}${remoteDir}/back"
-                    
+                    // Utilisation de la commande curl pour renommer le répertoire current
+                    sh "curl -Q 'RNFR current' -Q 'RNTO backup_${timestamp}' ftp://${user}:${password}@${server}${remoteDir}/"
+
                     // Utilisation de la commande curl pour envoyer les fichiers
                     filesToSend.each { file ->
                         sh "curl -T ${file} ftp://${user}:${password}@${server}${remoteDir}/"
