@@ -11,28 +11,20 @@ pipeline {
         
         stage('Push to FTP') {
             steps {
-                // Utilisation du plugin Publish Over FTP pour pousser les fichiers sur le serveur FTP
+                // Utilisation de curl pour envoyer les fichiers sur le serveur FTP
                 script {
-                    def server = 'nom_de_votre_configuration_ftp' // Nom de la configuration FTP définie dans Jenkins
-                    def remoteDirectory = '/remote/directory' // Répertoire distant sur le serveur FTP
-                    def credentialsId = 'identifiants' // ID des identifiants de connexion FTP définis dans Jenkins
+                    def server = 'ftpupload.net' // Adresse IP ou nom de domaine du serveur FTP
+                    def user = 'b11_36320483' // Nom d'utilisateur FTP
+                    def password = 'lorem1357$$' // Mot de passe FTP
+                    def remoteDir = '/htdocs' // Répertoire distant sur le serveur FTP
 
                     // Obtention des fichiers à envoyer
-                    def filesToSend = findFiles(glob: '**/*')
+                    def filesToSend = sh(script: "ls", returnStdout: true).trim().split("\n")
 
-                    // Utilisation de la fonction 'publishOverFTP' pour envoyer les fichiers
-                    publishOverFTP (
-                        failOnError: true,
-                        serverSelection: server,
-                        transfers: [
-                            [
-                                sourceFiles: filesToSend,
-                                remoteDirectory: remoteDirectory,
-                                flatten: false
-                            ]
-                        ],
-                        transferSetSource: 'PROJECT'
-                    )
+                    // Utilisation de la commande curl pour envoyer les fichiers
+                    filesToSend.each { file ->
+                        sh "curl -T ${file} ftp://${user}:${password}@${server}${remoteDir}/"
+                    }
                 }
             }
         }
