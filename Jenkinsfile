@@ -11,35 +11,28 @@ pipeline {
         
         stage('Push to FTP') {
             steps {
+                // Utilisation du plugin Publish Over FTP pour pousser les fichiers sur le serveur FTP
                 script {
-                    // Paramètres FTP
-                    def ftpServer = 'ftp.example.com'
-                    def ftpUser = 'username'
-                    def ftpPassword = 'password'
-                    def remoteDir = '/remote/directory'
+                    def server = 'nom_de_votre_configuration_ftp' // Nom de la configuration FTP définie dans Jenkins
+                    def remoteDirectory = '/remote/directory' // Répertoire distant sur le serveur FTP
+                    def credentialsId = 'identifiants' // ID des identifiants de connexion FTP définis dans Jenkins
 
-                    // Chemin local vers le code
-                    def localDir = "${env.WORKSPACE}"
+                    // Obtention des fichiers à envoyer
+                    def filesToSend = findFiles(glob: '**/*')
 
-                    // Connexion FTP
-                    def ftp = new FtpClient()
-                    ftp.connect(ftpServer)
-                    ftp.login(ftpUser, ftpPassword)
-                    
-                    // Changement du répertoire distant
-                    ftp.changeWorkingDirectory(remoteDir)
-
-                    // Liste des fichiers à transférer
-                    def fileList = sh(script: "ls ${localDir}", returnStdout: true).trim().split('\n')
-
-                    // Transfert de chaque fichier vers le serveur FTP
-                    fileList.each { file ->
-                        ftp.putFileStream(file)
-                    }
-
-                    // Déconnexion FTP
-                    ftp.logout()
-                    ftp.disconnect()
+                    // Utilisation de la fonction 'publishOverFTP' pour envoyer les fichiers
+                    publishOverFTP (
+                        failOnError: true,
+                        serverSelection: server,
+                        transfers: [
+                            [
+                                sourceFiles: filesToSend,
+                                remoteDirectory: remoteDirectory,
+                                flatten: false
+                            ]
+                        ],
+                        transferSetSource: 'PROJECT'
+                    )
                 }
             }
         }
