@@ -6,6 +6,7 @@ pipeline {
             steps {
                 // Étape pour récupérer le code depuis Git
                 git 'https://github.com/hianeme/jenkins_test.git'
+                git checkout main
             }
         }
         
