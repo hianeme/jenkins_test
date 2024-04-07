@@ -30,7 +30,7 @@ pipeline {
 
                     // Utilisation de la commande curl pour envoyer les fichiers
                     fileList.each { file ->
-                        sh "curl -T ${file} ftp://${user}:${password}@${server}${remoteDir}/current/"
+                        sh "curl --ftp-create-dirs -T ${file} ftp://${user}:${password}@${server}${remoteDir}/current/"
                         // sh "curl --ftp-create-dirs -T ${fileList.join(' ')} ftp://${user}:${password}@${server}${remoteDir}/${newDir}/"
                     }
                 }
