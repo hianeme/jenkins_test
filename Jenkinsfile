@@ -24,25 +24,16 @@ pipeline {
                     def fileList = sh(script: "ls", returnStdout: true).trim().split()
 
                     // Utilisation de lftp pour transférer les fichiers et dossiers de manière récursive
-                    sh """
-                    lftp -u ${user},${password} ${server} <<EOF
-                    cd ${remoteDir}
-                    mv current ${newDir}
-                    mkdir current
-                    cd current
-                    mirror -R .  // Transfert de fichiers et de dossiers récursivement
-                    quit
-                    EOF
-                    """
+                    
                     
                     // Utilisation de la commande curl pour renommer le répertoire current
                     // sh "curl -Q 'RNFR current' -Q 'RNTO backup_${timestamp}' ftp://${user}:${password}@${server}${remoteDir}/"
 
                     // Utilisation de la commande curl pour envoyer les fichiers
-                    //fileList.each { file ->
-                      //  sh "curl --ftp-create-dirs -T ${file} ftp://${user}:${password}@${server}${remoteDir}/current/"
+                    fileList.each { file ->
+                        sh "curl --ftp-create-dirs -T ${file} ftp://${user}:${password}@${server}${remoteDir}/current/"
                         // sh "curl --ftp-create-dirs -T ${fileList.join(' ')} ftp://${user}:${password}@${server}${remoteDir}/${newDir}/"
-                    //}
+                    }
                 }
             }
         }
