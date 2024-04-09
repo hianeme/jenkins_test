@@ -25,7 +25,6 @@ pipeline {
 
                     // Utilisation de lftp pour transférer les fichiers et dossiers de manière récursive
                     
-                    
                     // Utilisation de la commande curl pour renommer le répertoire current
                     // sh "curl -Q 'RNFR current' -Q 'RNTO backup_${timestamp}' ftp://${user}:${password}@${server}${remoteDir}/"
 
@@ -33,7 +32,7 @@ pipeline {
                     fileList.each { file ->
                         sh "curl --ftp-create-dirs -T ${file} ftp://${user}:${password}@${server}${remoteDir}/current/"
                         // sh "curl --ftp-create-dirs -T ${fileList.join(' ')} ftp://${user}:${password}@${server}${remoteDir}/${newDir}/"
-                    }
+                    //}
                 }
             }
         }
