@@ -32,7 +32,7 @@ pipeline {
                     fileList.each { file ->
                         sh "curl --ftp-create-dirs -T ${file} ftp://${user}:${password}@${server}${remoteDir}/current/"
                         // sh "curl --ftp-create-dirs -T ${fileList.join(' ')} ftp://${user}:${password}@${server}${remoteDir}/${newDir}/"
-                    //}
+                    }
                 }
             }
         }
